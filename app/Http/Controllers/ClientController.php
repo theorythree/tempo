@@ -72,9 +72,11 @@ class ClientController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Client $client)
     {
-        //
+      $client->name = $request->input('name');
+      $client->code = $request->input('code');
+      $client->save();
     }
 
     /**
@@ -83,8 +85,8 @@ class ClientController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Client $client)
     {
-        //
+      $client->delete();
     }
 }

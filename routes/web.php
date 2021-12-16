@@ -20,3 +20,4 @@ Route::get('/', function () {
 Route::post('/clients','App\Http\Controllers\ClientController@store');
 Route::put('/clients/{client}','App\Http\Controllers\ClientController@update');
 Route::delete('/clients/{client}','App\Http\Controllers\ClientController@destroy');
+Route::get('/clients/{client}','App\Http\Controllers\ClientController@show');

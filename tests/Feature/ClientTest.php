@@ -18,7 +18,16 @@ class ClientTest extends TestCase
   }
 
   public function test_user_can_view_a_client()
-  {
+  { 
+    $response = $this->post('/clients', ['name' => 'ABC Company', 'code' => 'ABCCO']);
+    $clients = Client::all();
+    
+    $this->assertTrue($clients->count() == 1);
+    
+    $client = $clients->first();  
+    $response = $this->get('/clients/'.$client->id);
+    $response->assertStatus(200);
+    $response->assertSee($client->code);
   }
 
   public function test_user_can_update_a_client()

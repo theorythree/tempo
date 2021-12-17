@@ -30,6 +30,24 @@ class ClientTest extends TestCase
     $response->assertSee($client->code);
   }
 
+  public function test_user_can_view_client_index_page() 
+  {
+    $clients = Client::factory(3)->create();
+    $clients = Client::all();
+    
+    $this->assertTrue($clients->count() == 3);
+    
+    $response = $this->get('/clients');
+    $response->assertStatus(200);
+
+    $firstClient = $clients->first();
+    $lastClient = $clients->last();
+
+    $response->assertSee($firstClient->code);
+    $response->assertSee($lastClient->code);
+
+  }
+
   public function test_user_can_update_a_client()
   {
     $response = $this->post('/clients', ['name' => 'ABC Company', 'code' => 'ABCCO']);

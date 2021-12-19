@@ -6,6 +6,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 use App\Models\Project;
+use App\Models\Client;
 
 class ProjectTest extends TestCase
 {
@@ -19,7 +20,11 @@ class ProjectTest extends TestCase
 
   public function test_user_can_view_a_project()
   { 
-    $response = Project::factory()->create();
+    $this->withoutExceptionHandling();
+
+    $client = Client::factory()->create();
+
+    $response = Project::factory()->create(['client_id' => $client]);
     $projects = Project::all();
     
     $this->assertTrue($projects->count() == 1);
@@ -32,7 +37,10 @@ class ProjectTest extends TestCase
 
   public function test_user_can_view_project_index_page() 
   {
-    $projects = Project::factory(3)->create();
+    $this->withoutExceptionHandling();
+    
+    $client = Client::factory()->create();
+    $projects = Project::factory(3)->create(['client_id' => $client]);
     
     $this->assertTrue($projects->count() == 3);
     

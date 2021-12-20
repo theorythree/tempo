@@ -14,6 +14,7 @@ class ClientTest extends TestCase
   public function test_user_can_create_a_client()
   {
     $response = $this->post('/clients', ['name' => 'ABC Company', 'code' => 'ABCCO']);
+    $response->assertStatus(200);
     $this->assertTrue(Client::all()->count() == 1);
   }
 

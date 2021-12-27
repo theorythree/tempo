@@ -22,6 +22,6 @@ class GuestTest extends TestCase
   public function test_guest_can_not_access_dashboard()
   {
     $response = $this->get('/dashboard');
-    $response->assertStatus(302);
+    $response->assertStatus(403);
   }
 }

@@ -37,15 +37,13 @@ class OwnerTest extends TestCase
 
   public function test_owner_can_not_access_dashboard()
   {
-    $this->withoutExceptionHandling();
-
     $ownerRole = Role::where('name','owner')->first();
     $this->assertTrue($ownerRole->id == 2);
-
+    
     $user = User::factory()->create();
     $user->roles()->attach($ownerRole->id);
 
     $response = $this->actingAs($user)->get('/dashboard');
-    $response->assertStatus(302);
+    $response->assertStatus(403);
   }
 }

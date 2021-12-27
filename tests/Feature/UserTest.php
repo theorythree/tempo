@@ -35,9 +35,7 @@ class UserTest extends TestCase
   // TODO: Add a private page access granted test for users
 
   public function test_user_can_not_access_dashboard()
-  {
-    $this->withoutExceptionHandling();
-    
+  {  
     $userRole = Role::where('name','user')->first();
     $this->assertTrue($userRole->id == 1);
     
@@ -45,6 +43,6 @@ class UserTest extends TestCase
     $user->roles()->attach($userRole->id);
 
     $response = $this->actingAs($user)->get('/dashboard');
-    $response->assertStatus(302);
+    $response->assertStatus(403);
   }
 }

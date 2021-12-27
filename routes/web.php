@@ -22,6 +22,17 @@ require __DIR__.'/auth.php';
 Route::resource('/clients','App\Http\Controllers\ClientController');
 Route::resource('/projects','App\Http\Controllers\ProjectController');
 
+// ADMIN ROUTES
 Route::group(['prefix'=>'dashboard', 'middleware'=>'is_admin'], function(){
   Route::get('/', function () { return view('dashboard'); })->name('dashboard');
+});
+
+// OWNER ROUTES
+Route::group(['middleware'=>'is_owner'], function(){
+  
+});
+
+// LOGGED IN USER ROUTES
+Route::group(['middleware'=>'is_user'], function(){ 
+  
 });

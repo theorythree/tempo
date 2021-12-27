@@ -16,19 +16,13 @@ class OwnerTest extends TestCase
   {
     parent::setUp();
     $this->artisan('db:seed --class=RoleSeeder');
+    $this->owner = User::factory()->create();
+    $this->owner->roles()->attach(Role::IS_OWNER);
   }
 
   public function test_owner_can_access_home_page()
   {
-    $this->withoutExceptionHandling();
-
-    $ownerRole = Role::where('name','owner')->first();
-    $this->assertTrue($ownerRole->id == Role::IS_OWNER);
-
-    $user = User::factory()->create();
-    $user->roles()->attach($ownerRole->id);
-    
-    $response = $this->actingAs($user)->get('/');
+    $response = $this->actingAs($this->owner)->get('/');
     $response->assertStatus(200);
   }
 
@@ -37,13 +31,7 @@ class OwnerTest extends TestCase
 
   public function test_owner_can_not_access_dashboard()
   {
-    $ownerRole = Role::where('name','owner')->first();
-    $this->assertTrue($ownerRole->id == Role::IS_OWNER);
-    
-    $user = User::factory()->create();
-    $user->roles()->attach($ownerRole->id);
-
-    $response = $this->actingAs($user)->get('/dashboard');
+    $response = $this->actingAs($this->owner)->get('/dashboard');
     $response->assertStatus(403);
   }
 }

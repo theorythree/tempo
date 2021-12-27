@@ -19,12 +19,11 @@ Route::get('/', function () {
 
 require __DIR__.'/auth.php';
 
-Route::resource('/clients','App\Http\Controllers\ClientController');
-Route::resource('/projects','App\Http\Controllers\ProjectController');
-
 // ADMIN ROUTES
-Route::group(['prefix'=>'dashboard', 'middleware'=>'is_admin'], function(){
-  Route::get('/', function () { return view('dashboard'); })->name('dashboard');
+Route::group(['prefix'=>'dashboard', 'as'=>'dashboard.', 'middleware'=>'is_admin'], function(){
+  Route::get('/', function () { return view('dashboard'); })->name('index');
+  Route::resource('/clients','App\Http\Controllers\Dashboard\ClientController');
+  Route::resource('/projects','App\Http\Controllers\Dashboard\ProjectController');
 });
 
 // OWNER ROUTES

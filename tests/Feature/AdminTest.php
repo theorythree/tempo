@@ -16,19 +16,15 @@ class AdminTest extends TestCase
   {
     parent::setUp();
     $this->artisan('db:seed --class=RoleSeeder');
+    $this->admin = User::factory()->create();
+    $this->admin->roles()->attach(Role::IS_ADMIN);
   }
 
   public function test_admin_can_access_home_page()
   {
     $this->withoutExceptionHandling();
 
-    $adminRole = Role::where('name','admin')->first();
-    $this->assertTrue($adminRole->id == Role::IS_ADMIN);
-
-    $user = User::factory()->create();
-    $user->roles()->attach($adminRole->id);
-
-    $response = $this->actingAs($user)->get('/');
+    $response = $this->actingAs($this->admin)->get('/');
     $response->assertStatus(200);
   }
 
@@ -39,13 +35,7 @@ class AdminTest extends TestCase
   {
     $this->withoutExceptionHandling();
 
-    $adminRole = Role::where('name','admin')->first();
-    $this->assertTrue($adminRole->id == Role::IS_ADMIN);
-
-    $user = User::factory()->create();
-    $user->roles()->attach($adminRole->id);
-
-    $response = $this->actingAs($user)->get('/dashboard');
+    $response = $this->actingAs($this->admin)->get('/dashboard');
     $response->assertStatus(200);
   }
 }

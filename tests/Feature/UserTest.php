@@ -23,7 +23,7 @@ class UserTest extends TestCase
     $this->withoutExceptionHandling();
 
     $userRole = Role::where('name','user')->first();
-    $this->assertTrue($userRole->id == 1);
+    $this->assertTrue($userRole->id == Role::IS_USER);
 
     $user = User::factory()->create();
     $user->roles()->attach($userRole->id);
@@ -37,7 +37,7 @@ class UserTest extends TestCase
   public function test_user_can_not_access_dashboard()
   {  
     $userRole = Role::where('name','user')->first();
-    $this->assertTrue($userRole->id == 1);
+    $this->assertTrue($userRole->id == Role::IS_USER);
     
     $user = User::factory()->create();
     $user->roles()->attach($userRole->id);

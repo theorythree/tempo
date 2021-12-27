@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use App\Models\Role;
 
 class IsUserMiddleware
 {
@@ -16,7 +17,7 @@ class IsUserMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-      if (!auth()->check() || !in_array(1, auth()->user()->roles()->pluck('id')->toArray())) {
+      if (!auth()->check() || !in_array(Role::IS_USER, auth()->user()->roles()->pluck('id')->toArray())) {
         abort(403);
       }
       

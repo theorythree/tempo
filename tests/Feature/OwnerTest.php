@@ -23,7 +23,7 @@ class OwnerTest extends TestCase
     $this->withoutExceptionHandling();
 
     $ownerRole = Role::where('name','owner')->first();
-    $this->assertTrue($ownerRole->id == 2);
+    $this->assertTrue($ownerRole->id == Role::IS_OWNER);
 
     $user = User::factory()->create();
     $user->roles()->attach($ownerRole->id);
@@ -38,7 +38,7 @@ class OwnerTest extends TestCase
   public function test_owner_can_not_access_dashboard()
   {
     $ownerRole = Role::where('name','owner')->first();
-    $this->assertTrue($ownerRole->id == 2);
+    $this->assertTrue($ownerRole->id == Role::IS_OWNER);
     
     $user = User::factory()->create();
     $user->roles()->attach($ownerRole->id);

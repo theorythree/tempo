@@ -23,7 +23,7 @@ class AdminTest extends TestCase
     $this->withoutExceptionHandling();
 
     $adminRole = Role::where('name','admin')->first();
-    $this->assertTrue($adminRole->id == 3);
+    $this->assertTrue($adminRole->id == Role::IS_ADMIN);
 
     $user = User::factory()->create();
     $user->roles()->attach($adminRole->id);
@@ -40,7 +40,7 @@ class AdminTest extends TestCase
     $this->withoutExceptionHandling();
 
     $adminRole = Role::where('name','admin')->first();
-    $this->assertTrue($adminRole->id == 3);
+    $this->assertTrue($adminRole->id == Role::IS_ADMIN);
 
     $user = User::factory()->create();
     $user->roles()->attach($adminRole->id);

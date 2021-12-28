@@ -15,8 +15,8 @@ class ClientController extends Controller
      */
     public function index()
     {
-        $clients = Client::all();
-        return view('clients.index',compact('clients'));
+      $clients = Client::all();
+      return view('dashboard.clients.index',compact('clients'));
     }
 
     /**
@@ -37,12 +37,10 @@ class ClientController extends Controller
      */
     public function store(Request $request)
     {
-    
       $client = new Client();
       $client->name = $request->input('name');
       $client->code = $request->input('code');
       $client->save();
-    
     }
 
     /**
@@ -53,7 +51,7 @@ class ClientController extends Controller
      */
     public function show(Client $client)
     {
-      return view('clients.show',compact('client'));
+      return view('dashboard.clients.show',compact('client'));
     }
 
     /**

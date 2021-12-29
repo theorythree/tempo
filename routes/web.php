@@ -24,6 +24,7 @@ Route::group(['prefix'=>'dashboard', 'as'=>'dashboard.', 'middleware'=>'is_admin
   Route::get('/', function () { return view('dashboard'); })->name('index');
   Route::resource('/clients','App\Http\Controllers\Dashboard\ClientController');
   Route::resource('/projects','App\Http\Controllers\Dashboard\ProjectController');
+  Route::resource('/users','App\Http\Controllers\Dashboard\UserController');
 });
 
 // OWNER ROUTES

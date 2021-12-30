@@ -19,20 +19,26 @@ Route::get('/', function () {
 
 require __DIR__.'/auth.php';
 
+// TODO: Protect these routes by adding them to the auth group
 Route::resource('/clients','App\Http\Controllers\ClientController');
 Route::resource('/projects','App\Http\Controllers\ProjectController');
 
-// ADMIN ROUTES
+// ADMIN ROLE ROUTES
 Route::group(['prefix'=>'dashboard', 'middleware'=>'is_admin'], function(){
   Route::get('/', function () { return view('dashboard'); })->name('dashboard');
 });
 
-// OWNER ROUTES
+// OWNER ROLE ROUTES
 Route::group(['middleware'=>'is_owner'], function(){
   
 });
 
-// LOGGED IN USER ROUTES
+// USER ROLE ROUTES
 Route::group(['middleware'=>'is_user'], function(){ 
   
+});
+
+// LOGGED IN USER ROUTES
+Route::group(['middleware'=>'auth'], function(){ 
+  Route::resource('/time','App\Http\Controllers\TimeEntryController');
 });

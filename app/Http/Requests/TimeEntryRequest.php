@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Auth;
+use App\Services\DurationService;
 
 class TimeEntryRequest extends FormRequest
 {
@@ -33,16 +34,7 @@ class TimeEntryRequest extends FormRequest
 
   protected function prepareForValidation(): void
   {
-    $duration = $this->duration;
-
-    if (str_contains((String) $this->duration, ':')) {
-      $durationParts = explode(":",$this->duration);
-      $duration = ($durationParts[0] * 60) + $durationParts[1];
-    }
-
-    if (str_contains((String) $this->duration, '.')) {
-      $duration = ($this->duration * 60);
-    }
+    $duration = (new DurationService())->convertToMinutes($this->duration);
 
     $this->merge([
       'duration' => $duration,

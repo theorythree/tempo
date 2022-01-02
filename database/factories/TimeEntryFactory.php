@@ -14,7 +14,9 @@ class TimeEntryFactory extends Factory
     public function definition()
     {
         return [
-            //
+          "project_id" => 1,
+          "user_id" => 1,
+          "duration" => '1:30',
         ];
     }
 }

@@ -9,7 +9,11 @@ use App\Services\DurationService;
 class TimeEntry extends Model
 {
   use HasFactory;
-    
+  
+  public function timeSheet() {
+    return $this->belongsTo(TimeSheet::class);
+  }
+  
   public function setDurationAttribute($value)
   {
     $this->attributes['duration'] = (new DurationService())->convertToMinutes($value);

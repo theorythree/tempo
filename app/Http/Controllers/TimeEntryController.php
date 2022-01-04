@@ -42,6 +42,7 @@ class TimeEntryController extends Controller
       $timeEntry->project_id = $request->project_id;
       $timeEntry->time_sheet_id = $request->time_sheet_id;
       $timeEntry->user_id = auth()->user()->id;
+      $timeEntry->date = $request->date;
       $timeEntry->duration = $request->duration;
       $timeEntry->save();
     }

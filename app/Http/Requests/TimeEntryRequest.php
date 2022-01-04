@@ -28,6 +28,7 @@ class TimeEntryRequest extends FormRequest
       return [
         'project_id' => ['required', 'numeric'],
         'time_sheet_id' => ['required', 'numeric'],
+        'date' => ['required', 'date'],
         'duration' => ['numeric'],
       ];
     }

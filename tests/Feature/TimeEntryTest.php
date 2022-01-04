@@ -32,6 +32,7 @@ class TimeEntryTest extends TestCase
     $response = $this->actingAs($this->user)->post('/time', [
       'project_id' => $this->project->id,
       'time_sheet_id' => $this->timesheet->id,
+      'date' => Date("Y-m-d"),
       'duration' => 2
     ]);
 
@@ -43,6 +44,7 @@ class TimeEntryTest extends TestCase
     $response = $this->actingAs($this->user)->post('/time', [
       'project_id' => $this->project->id,
       'time_sheet_id' => $this->timesheet->id,
+      'date' => Date("Y-m-d"),      
       'duration' => 'abc'
     ]);
     
@@ -56,6 +58,7 @@ class TimeEntryTest extends TestCase
     $response = $this->actingAs($this->user)->post('/time', [
       'project_id' => $this->project->id,
       'time_sheet_id' => $this->timesheet->id,
+      'date' => Date("Y-m-d"),
       'duration' => '1:30'
     ]);
     
@@ -68,6 +71,7 @@ class TimeEntryTest extends TestCase
     $response = $this->actingAs($this->user)->post('/time', [
       'project_id' => $this->project->id,
       'time_sheet_id' => $this->timesheet->id,
+      'date' => Date("Y-m-d"),
       'duration' => '1.5'
     ]);
     

@@ -9,6 +9,8 @@ class TimeSheet extends Model
 {
   use HasFactory;
 
+  protected $fillable = ['user_id', 'date'];
+
   public function timeEntries()
   {
     return $this->hasMany(TimeEntry::class);

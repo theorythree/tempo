@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\TimeEntry;
+use App\Models\TimeSheet;
 use App\Http\Requests\TimeEntryRequest;
 use Illuminate\Http\Request;
 use Auth;
@@ -17,7 +18,7 @@ class TimeEntryController extends Controller
      */
     public function index()
     {
-        //
+      $timeSheet = TimeSheet::firstOrCreate(['date' => Date('Y-m-d'), 'user_id' => auth()->user()->id]);
     }
 
     /**
@@ -27,7 +28,7 @@ class TimeEntryController extends Controller
      */
     public function create()
     {
-        //
+      return redirect(route('time.index'));
     }
 
     /**
@@ -37,14 +38,8 @@ class TimeEntryController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(TimeEntryRequest $request)
-    {
-      $timeEntry = new TimeEntry();
-      $timeEntry->project_id = $request->project_id;
-      $timeEntry->time_sheet_id = $request->time_sheet_id;
-      $timeEntry->user_id = auth()->user()->id;
-      $timeEntry->date = $request->date;
-      $timeEntry->duration = $request->duration;
-      $timeEntry->save();
+    { 
+      $timeEntry = TimeEntry::create($request->validated());
     }
 
     /**
@@ -76,9 +71,9 @@ class TimeEntryController extends Controller
      * @param  \App\Models\TimeEntry  $timeEntry
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, TimeEntry $timeEntry)
+    public function update(TimeEntryRequest $request, TimeEntry $time)
     {
-        //
+      $time->update($request->validated());
     }
 
     /**
@@ -87,8 +82,8 @@ class TimeEntryController extends Controller
      * @param  \App\Models\TimeEntry  $timeEntry
      * @return \Illuminate\Http\Response
      */
-    public function destroy(TimeEntry $timeEntry)
+    public function destroy(TimeEntry $time)
     {
-        //
+      $time->delete();
     }
 }

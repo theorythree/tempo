@@ -79,4 +79,42 @@ class TimeEntryTest extends TestCase
     $this->assertDatabaseHas('time_entries', ['duration' => 90]);
   }
 
+  public function test_user_can_update_time_entry()
+  {
+    $timeEntry = TimeEntry::factory()->create([
+      'project_id' => $this->project->id,
+      'time_sheet_id' => $this->timesheet->id,
+      'date' => Date("Y-m-d"),
+      'duration' => '1:30'
+    ]);
+
+    $this->assertDatabaseHas('time_entries', ['duration' => 90]);
+
+    $response = $this->actingAs($this->user)->put('/time/'.$timeEntry->id, [
+      'project_id' => $this->project->id,
+      'time_sheet_id' => $this->timesheet->id,
+      'date' => Date("Y-m-d"),
+      'duration' => '1:15'
+    ]);
+
+    $this->assertDatabaseHas('time_entries', ['duration' => 75]);
+  }
+
+  public function test_user_can_delete_a_time_entry()
+  {
+    $timeEntry = TimeEntry::factory()->create([
+      'project_id' => $this->project->id,
+      'time_sheet_id' => $this->timesheet->id,
+      'date' => Date("Y-m-d"),
+      'duration' => '2:30'
+    ]);
+
+    $this->assertDatabaseHas('time_entries', ['duration' => 150]);
+    $this->assertTrue(TimeSheet::all()->count() == 1);
+
+    $response = $this->actingAs($this->user)->delete('/time/'.$timeEntry->id);
+
+    $this->assertTrue(TimeEntry::all()->count() == 0);
+    $this->assertTrue(TimeSheet::all()->count() == 0);
+  }
 }

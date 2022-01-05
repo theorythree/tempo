@@ -28,6 +28,7 @@ class TimeEntryRequest extends FormRequest
       return [
         'project_id' => ['required', 'numeric'],
         'time_sheet_id' => ['required', 'numeric'],
+        'user_id' => ['required', 'numeric'],
         'date' => ['required', 'date'],
         'duration' => ['numeric'],
       ];
@@ -38,6 +39,7 @@ class TimeEntryRequest extends FormRequest
     $duration = (new DurationService())->convertToMinutes($this->duration);
 
     $this->merge([
+      'user_id' => auth()->user()->id,
       'duration' => $duration,
     ]);
   }

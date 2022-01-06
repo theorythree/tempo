@@ -7,84 +7,71 @@ use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 use App\Models\Project;
 use App\Models\Client;
+use App\Models\User;
+use App\Models\Role;
 
 class ProjectTest extends TestCase
 {
   use RefreshDatabase;
   
-  public function test_user_can_create_a_project()
+  public function setUp(): void
   {
-    $response = $this->post('/projects', ['client_id' => 1,'name' => 'My Project']);
+    parent::setUp();
+    $this->artisan('db:seed --class=RoleSeeder');
+    $this->user = User::factory()->create();
+    $this->user->roles()->attach(Role::IS_USER);
+    $this->owner = User::factory()->create();
+    $this->owner->roles()->attach(Role::IS_OWNER);
+  }
+
+  public function test_owner_can_create_a_project()
+  {
+    $response = $this->actingAs($this->owner)->post('/projects', ['client_id' => 1,'name' => 'My Project']);
     $this->assertTrue(Project::all()->count() == 1);
   }
 
-  public function test_user_can_view_a_project()
-  { 
-    $this->withoutExceptionHandling();
-
-    $client = Client::factory()->create();
-
-    $response = Project::factory()->create(['client_id' => $client]);
-    $projects = Project::all();
-    
-    $this->assertTrue($projects->count() == 1);
-    
-    $project = $projects->first();  
-    $response = $this->get('/projects/'.$project->id);
-    $response->assertStatus(200);
-    $response->assertSee($project->name);
-  }
-
-  public function test_user_can_view_project_index_page() 
+  public function test_user_can_not_create_a_project()
   {
-    $this->withoutExceptionHandling();
-    
-    $client = Client::factory()->create();
-    $projects = Project::factory(3)->create(['client_id' => $client]);
-    
-    $this->assertTrue($projects->count() == 3);
-    
-    $response = $this->get('/projects');
-    $response->assertStatus(200);
-
-    $firstProject = $projects->first();
-    $lastProject = $projects->last();
-
-    $response->assertSee($firstProject->name);
-    $response->assertSee($lastProject->name);
+    $response = $this->actingAs($this->user)->post('/projects', ['client_id' => 1,'name' => 'My Project']);
+    $this->assertTrue(Project::all()->count() == 0);
   }
 
-  public function test_user_can_update_a_project()
+  public function test_owner_can_update_a_project()
   {
-    $response = $this->post('/projects', ['client_id' => 1,'name' => 'My Project']);
-    $projects = Project::all();
-    
-    $this->assertTrue($projects->count() == 1);
+    $project = Project::factory()->create(['name' => 'Original Project Name']);
+    $this->assertTrue(Project::all()->count() == 1);
+    $this->assertDatabaseHas('projects', ['name' => $project->name]);
 
-    $project = $projects->first();
-    $this->assertTrue($project->name == $projects->first()->name);
-
-    $response = $this->put('/projects/'.$project->id, ['client_id' => 1,'name' => 'My Updated Project']);
-    $response->assertStatus(200);
-
-    $projects = Project::all();
-    $this->assertTrue($projects->first()->name == 'My Updated Project');
+    $response = $this->actingAs($this->owner)->put('/projects/'.$project->id, ['client_id' => 1,'name' => 'My Updated Project Name']);
+    $this->assertDatabaseHas('projects', ['name' => 'My Updated Project Name']);
   }
 
-  public function test_user_can_delete_a_project()
+  public function test_user_can_not_update_a_project()
   {
-    $response = Project::factory()->create();
-    $projects = Project::all();
-    
-    $this->assertTrue($projects->count() == 1);
+    $project = Project::factory()->create(['name' => 'Original Project Name']);
+    $this->assertTrue(Project::all()->count() == 1);
+    $this->assertDatabaseHas('projects', ['name' => $project->name]);
 
-    $project = $projects->first();
-    $this->assertTrue($project->name == $projects->first()->name);
-
-    $response = $this->delete('/projects/'.$project->id);
-    $response->assertStatus(200);
-
-    $projects = Project::all();
-    $this->assertTrue($projects->count() == 0);    
+    $response = $this->actingAs($this->user)->put('/projects/'.$project->id, ['client_id' => 1,'name' => 'My Updated Project Name']);
+    $this->assertDatabaseHas('projects', ['name' => $project->name]);
   }
+
+  public function test_owner_can_delete_a_project()
+  {
+    $project = Project::factory()->create();
+    $this->assertTrue(Project::all()->count() == 1);
+
+    $response = $this->actingAs($this->owner)->delete('/projects/'.$project->id);
+    $this->assertTrue(Project::all()->count() == 0);    
+  }
+
+  public function test_user_can_not_delete_a_project()
+  {
+    $project = Project::factory()->create();
+    $this->assertTrue(Project::all()->count() == 1);
+
+    $response = $this->actingAs($this->user)->delete('/projects/'.$project->id);
+    $this->assertTrue(Project::all()->count() == 1);    
+  }
+
 }

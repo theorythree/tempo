@@ -6,81 +6,71 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 use App\Models\Client;
+use App\Models\User;
+use App\Models\Role;
 
 class ClientTest extends TestCase
 {
   use RefreshDatabase;
   
-  public function test_user_can_create_a_client()
+  public function setUp(): void
   {
-    $response = $this->post('/clients', ['name' => 'ABC Company', 'code' => 'ABCCO']);
-    $response->assertStatus(200);
+    parent::setUp();
+    $this->artisan('db:seed --class=RoleSeeder');
+    $this->user = User::factory()->create();
+    $this->user->roles()->attach(Role::IS_USER);
+    $this->owner = User::factory()->create();
+    $this->owner->roles()->attach(Role::IS_OWNER);
+  }
+
+  public function test_owner_can_create_a_client()
+  {
+    $response = $this->actingAs($this->owner)->post('/clients', ['name' => 'ABC Company', 'code' => 'ABCCO']);
     $this->assertTrue(Client::all()->count() == 1);
   }
 
-  public function test_user_can_view_a_client()
-  { 
-    $response = $this->post('/clients', ['name' => 'ABC Company', 'code' => 'ABCCO']);
-    $clients = Client::all();
-    
-    $this->assertTrue($clients->count() == 1);
-    
-    $client = $clients->first();  
-    $response = $this->get('/clients/'.$client->id);
-    $response->assertStatus(200);
-    $response->assertSee($client->code);
-  }
-
-  public function test_user_can_view_client_index_page() 
+  public function test_user_can_not_create_a_client()
   {
-    $clients = Client::factory(3)->create();
-    $clients = Client::all();
-    
-    $this->assertTrue($clients->count() == 3);
-    
-    $response = $this->get('/clients');
-    $response->assertStatus(200);
-
-    $firstClient = $clients->first();
-    $lastClient = $clients->last();
-
-    $response->assertSee($firstClient->code);
-    $response->assertSee($lastClient->code);
-
+    $response = $this->actingAs($this->owner)->post('/clients', ['name' => 'ABC Company', 'code' => 'ABCCO']);
+    $this->assertTrue(Client::all()->count() == 0);
   }
 
-  public function test_user_can_update_a_client()
+  public function test_owner_can_update_a_client()
   {
-    $response = $this->post('/clients', ['name' => 'ABC Company', 'code' => 'ABCCO']);
-    $clients = Client::all();
-    
-    $this->assertTrue($clients->count() == 1);
+    $client = Client::factory()->create(['name' => 'ABC Company', 'code' => 'ABCCO']);
+    $this->assertTrue(Client::all()->count() == 1);
+    $this->assertDatabaseHas('clients', ['name' => $client->name]);
 
-    $client = $clients->first();
-    $this->assertTrue($client->name == $clients->first()->name);
-
-    $response = $this->put('/clients/'.$client->id, ['name' => 'ABC Company Updated', 'code' => 'ABCCO']);
-    $response->assertStatus(200);
-
-    $clients = Client::all();
-    $this->assertTrue($clients->first()->name == 'ABC Company Updated');
-
+    $response = $this->actingAs($this->owner)->put('/clients/'.$client->id, ['name' => 'ABC Company Updated', 'code' => 'ABCCO']);
+    $this->assertDatabaseHas('clients', ['name' => 'ABC Company Updated']);
   }
 
-  public function test_user_can_delete_a_client()
+  public function test_user_can_not_update_a_client()
   {
-    $response = $this->post('/clients', ['name' => 'ABC Company', 'code' => 'ABCCO']);
-    $clients = Client::all();
-    
-    $this->assertTrue($clients->count() == 1);
+    $client = Client::factory()->create(['name' => 'ABC Company', 'code' => 'ABCCO']);
+    $this->assertTrue(Client::all()->count() == 1);
+    $this->assertDatabaseHas('clients', ['name' => $client->name]);
 
-    $client = $clients->first();
-    $this->assertTrue($client->name == $clients->first()->name);
-
-    $response = $this->delete('/clients/'.$client->id);
-    $response->assertStatus(200);
-
-    $clients = Client::all();
-    $this->assertTrue($clients->count() == 0);    
+    $response = $this->actingAs($this->user)->put('/clients/'.$client->id, ['name' => 'ABC Company Updated', 'code' => 'ABCCO']);
+    $this->assertDatabaseHas('clients', ['name' => $client->name]);
   }
+
+  public function test_owner_can_delete_a_client()
+  {
+    $client = Client::factory()->create();
+    $this->assertTrue(Client::all()->count() == 1);
+    
+    $response = $this->actingAs($this->owner)->delete('/clients/'.$client->id);
+    $this->assertTrue(Client::all()->count() == 0);
+  }
+
+  public function test_user_can_not_delete_a_client()
+  {
+    $client = Client::factory()->create();
+    $this->assertTrue(Client::all()->count() == 1);
+    
+    $response = $this->actingAs($this->user)->delete('/clients/'.$client->id);
+    $this->assertTrue(Client::all()->count() == 1);
+  }
+
 }

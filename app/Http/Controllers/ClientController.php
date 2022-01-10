@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Client;
+use App\Http\Requests\ClientRequest;
 
 class ClientController extends Controller
 {
@@ -25,7 +26,7 @@ class ClientController extends Controller
      */
     public function create()
     {
-        //
+      return view('clients.create');
     }
 
     /**
@@ -34,20 +35,15 @@ class ClientController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ClientRequest $request)
     {
-    
-      $client = new Client();
-      $client->name = $request->input('name');
-      $client->code = $request->input('code');
-      $client->save();
-    
+      $client = Client::create($request->validated());
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  Client  $client
      * @return \Illuminate\Http\Response
      */
     public function show(Client $client)
@@ -58,32 +54,30 @@ class ClientController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  Client  $client
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Client $client)
     {
-        //
+      return view('clients.edit',compact('client'));
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  Client  $client
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Client $client)
+    public function update(ClientRequest $request, Client $client)
     {
-      $client->name = $request->input('name');
-      $client->code = $request->input('code');
-      $client->save();
+      $client->update($request->validated());
     }
-
+    
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  Client  $client
      * @return \Illuminate\Http\Response
      */
     public function destroy(Client $client)

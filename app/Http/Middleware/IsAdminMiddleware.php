@@ -17,7 +17,7 @@ class IsAdminMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-      if (!auth()->check() || !in_array(Role::IS_ADMIN, auth()->user()->roles()->pluck('id')->toArray())) {
+      if (!auth()->check() || !auth()->user()->isAdmin()) {
         abort(403);
       }
       

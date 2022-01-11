@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use App\Models\Role;
 
 class User extends Authenticatable
 {
@@ -46,4 +47,20 @@ class User extends Authenticatable
     {
       return $this->belongsToMany(Role::class);
     }
+
+    public function isAdmin(): Bool
+    {
+      return in_array(Role::IS_ADMIN, $this->roles()->pluck('id')->toArray());
+    }
+
+    public function isOwner(): Bool
+    {
+      return in_array(Role::IS_OWNER, $this->roles()->pluck('id')->toArray());
+    }
+
+    public function isUser(): Bool
+    {
+      return in_array(Role::IS_USER, $this->roles()->pluck('id')->toArray());
+    }
+
 }

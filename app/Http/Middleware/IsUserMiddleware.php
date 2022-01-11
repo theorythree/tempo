@@ -17,7 +17,11 @@ class IsUserMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-      if (!auth()->check() || !auth()->user()->isUser()) {
+      if (!auth()->check()) {
+        return redirect(route('login'));
+      }
+
+      if (!auth()->user()->isUser()) {
         abort(403);
       }
       

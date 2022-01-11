@@ -17,7 +17,11 @@ class IsOwnerMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-      if (!auth()->check() || !auth()->user()->isOwner()) {
+      if (!auth()->check()) {
+        return redirect(route('login'));
+      }
+
+      if (!auth()->user()->isOwner()) {
         abort(403);
       }
       

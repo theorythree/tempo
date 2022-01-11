@@ -16,12 +16,16 @@ class GuestTest extends TestCase
       $response = $this->get('/');
       $response->assertStatus(200);
   }
-  
-  // TODO: Add a private page access denied test for guests
 
   public function test_guest_can_not_access_dashboard()
   {
     $response = $this->get('/dashboard');
-    $response->assertStatus(403);
+    $response->assertStatus(302);
+  }
+
+  public function test_guest_can_not_access_clients_page()
+  {
+    $response = $this->get('/clients');
+    $response->assertStatus(302);
   }
 }

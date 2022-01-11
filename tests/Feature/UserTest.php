@@ -16,33 +16,25 @@ class UserTest extends TestCase
   {
     parent::setUp();
     $this->artisan('db:seed --class=RoleSeeder');
+    $this->user = User::factory()->create();
+    $this->user->roles()->attach(Role::IS_USER);
   }
 
   public function test_user_can_access_home_page()
   {
-    $this->withoutExceptionHandling();
-
-    $userRole = Role::where('name','user')->first();
-    $this->assertTrue($userRole->id == Role::IS_USER);
-
-    $user = User::factory()->create();
-    $user->roles()->attach($userRole->id);
-
-    $response = $this->actingAs($user)->get('/');
+    $response = $this->actingAs($this->user)->get('/');
     $response->assertStatus(200);
   }
   
-  // TODO: Add a private page access granted test for users
+  public function test_user_can_access_time_sheet_page()
+  {
+    $response = $this->actingAs($this->user)->get('/time');
+    $response->assertStatus(200);
+  }
 
   public function test_user_can_not_access_dashboard()
   {  
-    $userRole = Role::where('name','user')->first();
-    $this->assertTrue($userRole->id == Role::IS_USER);
-    
-    $user = User::factory()->create();
-    $user->roles()->attach($userRole->id);
-
-    $response = $this->actingAs($user)->get('/dashboard');
+    $response = $this->actingAs($this->user)->get('/dashboard');
     $response->assertStatus(403);
   }
 }

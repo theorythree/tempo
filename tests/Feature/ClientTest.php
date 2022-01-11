@@ -25,13 +25,14 @@ class ClientTest extends TestCase
 
   public function test_owner_can_create_a_client()
   {
+    $this->withoutExceptionHandling();
     $response = $this->actingAs($this->owner)->post('/clients', ['name' => 'ABC Company', 'code' => 'ABCCO']);
     $this->assertTrue(Client::all()->count() == 1);
   }
 
   public function test_user_can_not_create_a_client()
   {
-    $response = $this->actingAs($this->owner)->post('/clients', ['name' => 'ABC Company', 'code' => 'ABCCO']);
+    $response = $this->actingAs($this->user)->post('/clients', ['name' => 'ABC Company', 'code' => 'ABCCO']);
     $this->assertTrue(Client::all()->count() == 0);
   }
 

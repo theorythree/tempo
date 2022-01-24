@@ -14,7 +14,7 @@ class AddDateColumnToTimeEntriesTable extends Migration
     public function up()
     {
         Schema::table('time_entries', function (Blueprint $table) {
-          $table->date('date')->after('user_id');
+          $table->date('date')->after('user_id')->default(date('Y-m-d'));
         });
     }
 

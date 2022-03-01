@@ -20,7 +20,7 @@
 
 <body>
 
-  @include('navigation.guest-nav')
+  @include('navigation.site-nav')
 
   <!-- Page Content -->
   <main class="font-sans text-gray-900 antialiased flex-auto">

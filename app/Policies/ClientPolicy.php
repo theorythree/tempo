@@ -42,7 +42,7 @@ class ClientPolicy
      */
     public function create(User $user)
     {
-      return auth()->check() && $user->isOwner();
+      return $user->isOwner() || $user->isAdmin();
     }
 
     /**
@@ -54,7 +54,7 @@ class ClientPolicy
      */
     public function update(User $user, Client $client)
     {
-      return auth()->check() && $user->isOwner();
+      return $user->isOwner() || $user->isAdmin();
     }
 
     /**
@@ -66,7 +66,7 @@ class ClientPolicy
      */
     public function delete(User $user, Client $client)
     {
-      return auth()->check() && $user->isOwner();
+      return $user->isOwner() || $user->isAdmin();
     }
 
     /**

@@ -1,5 +1,5 @@
 <x-site-layout>
-  <x-list-item-wrapper title="Clients">
+  <x-section-wrapper title="Clients">
     @forelse ($clients as $client)
       <div class="flex flex-row items-center mb-1 bg-gray-100 p-2 rounded">
         <div class="basis-3/4">
@@ -28,5 +28,5 @@
         + Add a Client
       </x-button-link>
     </div>
-  </x-list-item-wrapper>
+  </x-section-wrapper>
 </x-site-layout>

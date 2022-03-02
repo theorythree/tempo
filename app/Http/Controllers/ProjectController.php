@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Client;
 use App\Models\Project;
 use Illuminate\Http\Request;
 use App\Http\Requests\ProjectRequest;
@@ -15,8 +16,8 @@ class ProjectController extends Controller
      */
     public function index()
     {
-      $projects = Project::all();
-      return view('projects.index',compact('projects'));
+      $clients = Client::all()->sortBy('name');
+      return view('projects.index',compact('clients'));
     }
 
     /**

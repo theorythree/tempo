@@ -14,11 +14,14 @@ class ProjectFactory extends Factory
      */
     public function definition()
     {
-        return [
-          "client_id" => 1,
-          "name" => Str::random(10)." Project",
-          "description" => $this->faker->text(200),
-          "budget" => $this->faker->randomFloat(2,100,10000),
-        ];
+      $project_names = ['Website Redesign', 'Shopify Website', 'Website Design', 'Mobile App', 'iOS App', 'Android App', 'Writing Project', 'Consulting', 'Research Dev','Corporate Website'];
+      $rand_key = array_rand($project_names,1);
+
+      return [
+        "client_id" => 1,
+        "name" => $project_names[$rand_key],
+        "description" => $this->faker->text(200),
+        "budget" => $this->faker->randomFloat(2,100,10000),
+      ];
     }
 }

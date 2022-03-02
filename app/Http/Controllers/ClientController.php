@@ -15,8 +15,8 @@ class ClientController extends Controller
      */
     public function index()
     {
-        $clients = Client::all();
-        return view('clients.index',compact('clients'));
+      $clients = Client::all()->sortBy('name');
+      return view('clients.index',compact('clients'));
     }
 
     /**

@@ -42,7 +42,7 @@ class ProjectPolicy
      */
     public function create(User $user)
     {
-      return auth()->check() && $user->isOwner();
+      return $user->isOwner() || $user->isAdmin();
     }
 
     /**
@@ -54,7 +54,7 @@ class ProjectPolicy
      */
     public function update(User $user, Project $project)
     {
-      return auth()->check() && $user->isOwner();
+      return $user->isOwner() || $user->isAdmin();
     }
 
     /**
@@ -66,7 +66,7 @@ class ProjectPolicy
      */
     public function delete(User $user, Project $project)
     {
-      return auth()->check() && $user->isOwner();
+      return $user->isOwner() || $user->isAdmin();
     }
 
     /**

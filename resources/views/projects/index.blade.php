@@ -1,22 +1,26 @@
-<!DOCTYPE html>
-<html lang="en">
+<x-site-layout>
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Project List</title>
-</head>
+  <x-section-wrapper title="Projects" />
 
-<body>
+  @forelse($clients as $client)
+    <x-section-wrapper title="{{ $client->name }}">
+      @forelse ($client->projects as $project)
+        <x-project-item :project="$project" />
+      @empty
+        <div class="flex flex-row items-center mb-1 bg-gray-100 p-4 rounded">
+          {{ $client->name }} has no projects.
+        </div>
+      @endforelse
+      <div class="mt-5">
+        <x-button-link href="{{ route('projects.create') }}">
+          + Add a Project
+        </x-button-link>
+      </div>
+    </x-section-wrapper>
+  @empty
+    <div class="flex flex-row items-center mb-1 bg-gray-100 p-4 rounded">
+      No clients found.
+    </div>
+  @endforelse
 
-  @foreach($projects as $project)
-  <p>
-    Name: {{ $project->name }} | Client: {{ $project->client->name }} | Budget: ${{ $project->budget }}
-    <a href="{{ route('projects.show',$project->id) }}">View Project</a>
-  </p>
-  @endforeach
-
-</body>
-
-</html>
+</x-site-layout>

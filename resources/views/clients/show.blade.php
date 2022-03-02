@@ -12,9 +12,8 @@
     </div>
     <div class="flex gap-4 columns-2">
       <h3 class="w-20 font-bold">Address:</h3>
-      <div>{{ $client->address }}</div>
+      <div>{{ $client->address }} {{ $client->phone }}</div>
     </div>
   </x-section-wrapper>
-
 
 </x-site-layout>

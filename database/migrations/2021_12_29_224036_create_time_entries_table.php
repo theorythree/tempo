@@ -17,7 +17,6 @@ class CreateTimeEntriesTable extends Migration
           $table->id();
           $table->unsignedInteger('invoice_id')->nullable();
           $table->unsignedInteger('project_id');
-          $table->unsignedInteger('time_sheet_id');
           $table->unsignedInteger('user_id');
           $table->integer('duration')->default(0)->nullable();
           $table->boolean('invoiced')->default(false);

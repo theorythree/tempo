@@ -9,7 +9,6 @@ use App\Models\Client;
 use App\Models\Project;
 use App\Models\Role;
 use App\Models\TimeEntry;
-use App\Models\TimeSheet;
 use App\Models\User;
 
 class TimeEntryTest extends TestCase
@@ -24,26 +23,12 @@ class TimeEntryTest extends TestCase
     $this->user->roles()->attach(Role::IS_USER);
     $this->client = Client::factory()->create();
     $this->project = Project::factory()->create(['client_id' => $this->client->id]);
-    $this->timesheet = TimeSheet::factory()->create(['user_id' => $this->user->id]);
-  }
-
-  public function test_user_can_add_a_time_entry_to_their_timesheet()
-  {
-    $response = $this->actingAs($this->user)->post('/time', [
-      'project_id' => $this->project->id,
-      'time_sheet_id' => $this->timesheet->id,
-      'date' => Date("Y-m-d"),
-      'duration' => 2
-    ]);
-
-    $this->assertTrue(TimeEntry::all()->count() == 1);
   }
 
   public function test_user_cannot_add_string_value_for_duration_value()
   {
     $response = $this->actingAs($this->user)->post('/time', [
       'project_id' => $this->project->id,
-      'time_sheet_id' => $this->timesheet->id,
       'date' => Date("Y-m-d"),      
       'duration' => 'abc'
     ]);
@@ -57,7 +42,6 @@ class TimeEntryTest extends TestCase
   {
     $response = $this->actingAs($this->user)->post('/time', [
       'project_id' => $this->project->id,
-      'time_sheet_id' => $this->timesheet->id,
       'date' => Date("Y-m-d"),
       'duration' => '1:30'
     ]);
@@ -70,7 +54,6 @@ class TimeEntryTest extends TestCase
   {
     $response = $this->actingAs($this->user)->post('/time', [
       'project_id' => $this->project->id,
-      'time_sheet_id' => $this->timesheet->id,
       'date' => Date("Y-m-d"),
       'duration' => '1.5'
     ]);
@@ -83,7 +66,6 @@ class TimeEntryTest extends TestCase
   {
     $timeEntry = TimeEntry::factory()->create([
       'project_id' => $this->project->id,
-      'time_sheet_id' => $this->timesheet->id,
       'date' => Date("Y-m-d"),
       'duration' => '1:30'
     ]);
@@ -92,7 +74,6 @@ class TimeEntryTest extends TestCase
 
     $response = $this->actingAs($this->user)->put('/time/'.$timeEntry->id, [
       'project_id' => $this->project->id,
-      'time_sheet_id' => $this->timesheet->id,
       'date' => Date("Y-m-d"),
       'duration' => '1:15'
     ]);
@@ -104,17 +85,14 @@ class TimeEntryTest extends TestCase
   {
     $timeEntry = TimeEntry::factory()->create([
       'project_id' => $this->project->id,
-      'time_sheet_id' => $this->timesheet->id,
       'date' => Date("Y-m-d"),
       'duration' => '2:30'
     ]);
 
     $this->assertDatabaseHas('time_entries', ['duration' => 150]);
-    $this->assertTrue(TimeSheet::all()->count() == 1);
 
     $response = $this->actingAs($this->user)->delete('/time/'.$timeEntry->id);
 
     $this->assertTrue(TimeEntry::all()->count() == 0);
-    $this->assertTrue(TimeSheet::all()->count() == 0);
   }
 }

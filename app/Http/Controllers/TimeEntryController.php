@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\TimeEntry;
-use App\Models\TimeSheet;
 use App\Http\Requests\TimeEntryRequest;
 use Illuminate\Http\Request;
 use Auth;
@@ -18,7 +17,7 @@ class TimeEntryController extends Controller
      */
     public function index()
     {
-      $timeSheet = TimeSheet::firstOrCreate(['date' => Date('Y-m-d'), 'user_id' => auth()->user()->id]);
+     
     }
 
     /**

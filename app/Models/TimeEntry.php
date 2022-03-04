@@ -11,9 +11,13 @@ class TimeEntry extends Model
   use HasFactory;
 
   protected $fillable = ['invoice_id','project_id','time_sheet_id','user_id','date','duration','invoiced'];
+
+  public function project() {
+    return $this->belongsTo(Project::class);
+  }
   
-  public function timeSheet() {
-    return $this->belongsTo(TimeSheet::class);
+  public function user(){
+    return $this->belongsTo(User::class);
   }
   
   public function setDurationAttribute($value)

@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use App\Models\Project;
+use App\Models\TimeEntry;
 
 class ClientSeeder extends Seeder
 {
@@ -16,6 +17,9 @@ class ClientSeeder extends Seeder
     {
       \DB::table('clients')->truncate();
       \DB::table('projects')->truncate();
-      \App\Models\Client::factory(10)->has(Project::factory()->count(3))->create();
+      \App\Models\Client::factory(10)->has(
+        Project::factory()->has(
+          TimeEntry::factory()->count(3)
+          )->count(3))->create();
     }
 }

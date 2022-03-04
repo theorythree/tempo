@@ -27,7 +27,7 @@
 
   <x-section-wrapper title="Time Entries:">
     @forelse($project->timeEntries as $timeEntry)
-      <x-project-item :timeEntry="$timeEntry" />
+      <x-time-entry-item :timeEntry="$timeEntry" />
     @empty
       <div class="flex flex-row items-center mb-1 bg-gray-100 p-4 rounded">
         {{ $project->name }} does not have any time entries.

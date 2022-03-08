@@ -10,7 +10,7 @@ class DurationService
 
     if (str_contains((String) $value, ':')) {
       $durationParts = explode(":",$value);
-      $duration = ($durationParts[0] * 60) + $durationParts[1];
+      $duration = (max(0,$durationParts[0]) * 60) + max(0,$durationParts[1]);
     }
 
     if (str_contains((String) $value, '.')) {

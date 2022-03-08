@@ -11,6 +11,7 @@
   </x-slot>
 
   <x-section-wrapper title="Project Details:">
+
     <div class="flex gap-4 columns-2">
       <h3 class="w-20 font-bold">Client:</h3>
       <div>{{ $project->client->name }}</div>

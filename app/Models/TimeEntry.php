@@ -11,7 +11,8 @@ class TimeEntry extends Model
   use HasFactory;
 
   protected $fillable = ['invoice_id','project_id','time_sheet_id','user_id','date','duration','invoiced'];
-
+  protected $casts = ['date' => 'date'];
+  
   public function project() {
     return $this->belongsTo(Project::class);
   }
@@ -23,5 +24,10 @@ class TimeEntry extends Model
   public function setDurationAttribute($value)
   {
     $this->attributes['duration'] = (new DurationService())->convertToMinutes($value);
+  }
+
+  public function getDisplayDurationAttribute()
+  {
+    return (new DurationService())->convertToDisplay($this->duration);
   }
 }

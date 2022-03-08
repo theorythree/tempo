@@ -17,6 +17,8 @@ class ClientSeeder extends Seeder
     {
       \DB::table('clients')->truncate();
       \DB::table('projects')->truncate();
+      \DB::table('time_entries')->truncate();
+
       \App\Models\Client::factory(10)->has(
         Project::factory()->has(
           TimeEntry::factory()->count(3)

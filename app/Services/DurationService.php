@@ -18,4 +18,12 @@ class DurationService
     }
     return $duration;
   }
+
+  public function convertToDisplay($value) 
+  {
+    $hours = floor($value / 60);
+    $mins = $value % 60;
+    $mins = strlen($mins) <= 1 ? '0'.$mins : $mins;
+    return $hours.':'.$mins;
+  }
 }

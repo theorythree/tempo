@@ -33,6 +33,7 @@
         {{ $project->name }} does not have any time entries.
       </div>
     @endforelse
+    <h2>Total: {{ $project->total }}</h2>
   </x-section-wrapper>
 
 </x-site-layout>

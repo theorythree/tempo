@@ -13,11 +13,14 @@ class TimeEntryFactory extends Factory
      */
     public function definition()
     {
+      $randHour = rand(0,5);
+      $randMin = rand(0,59);
+      
         return [
           "project_id" => 1,
           "user_id" => 1,
-          "date" => Date("Y-m-d"),
-          "duration" => '1:30',
+          "date" => date('Y-m-d', strtotime( '+'.mt_rand(-30,0).' days')),
+          "duration" => $randHour.':'.$randMin,
         ];
     }
 }

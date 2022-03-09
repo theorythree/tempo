@@ -1,22 +1,46 @@
-<!DOCTYPE html>
-<html lang="en">
+<x-site-layout>
+  <x-form-wrapper title="Add a Project for {{ $client->name }}">
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Create a Project for {{ $client->name }}</title>
-</head>
+    <!-- Session Status -->
+    <x-auth-session-status class="mb-4" :status="session('status')" />
 
-<body>
-  <form action="{{ route('projects.store') }}" method="POST">
-    <input type="hidden" name="client_id" value="{{ $client->id }}" />
-    <input type="text" name="name" id="name" placeholder="Name of the Project" required><br />
-    <input type="text" name="budget" id="budget" placeholder="Budget in US Dollars"><br />
-    <textarea name="description" id="description" cols="30" rows="10"
-      placeholder="Project Description"></textarea><br />
-    <input type="submit" value="Submit">
-  </form>
-</body>
+    <!-- Validation Errors -->
+    <x-auth-validation-errors class="mb-4" :errors="$errors" />
 
-</html>
+    <form method="POST" action="{{ route('projects.store') }}">
+      @csrf
+      <input type="hidden" name="client_id" value="{{ $client->id }}">
+
+      <div class="flex flex-row">
+        <div class="basis-1/2 mr-4">
+          <x-label for="name" :value="__('Name')" />
+          <x-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')"
+            value="{{ old('name') ?? '' }}" required />
+        </div>
+        <div class="basis-1/2 ml-4">
+          <x-label for="budget" :value="__('Budget (USD)')" />
+          <x-input id="budget" class="block mt-1 w-sm" type="text" name="code" :value="old('budget')"
+            value="{{ old('budget') ?? '' }}" />
+        </div>
+      </div>
+
+      <div class="flex flex-row mt-4">
+        <div class="basis-1/2 mr-4">
+          <x-label for="description" :value="__('Description')" />
+          <x-input-textarea id="address" class="block mt-1 w-full" type="text" name="description">
+            {{ old('description') ?? '' }}</x-input-textarea>
+        </div>
+      </div>
+
+      <div class="flex items-center justify-start mt-4">
+        <x-button-link href="{{ route('clients.index') }}">
+          {{ __('Cancel') }}
+        </x-button-link>
+        <x-button>
+          {{ __('Save') }}
+        </x-button>
+      </div>
+
+    </form>
+  </x-form-wrapper>
+</x-site-layout>

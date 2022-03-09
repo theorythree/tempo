@@ -12,7 +12,7 @@
         </div>
       @endforelse
       <div class="mt-5">
-        <x-button-link href="{{ route('projects.create') }}">
+        <x-button-link href="{{ route('projects.create') }}/?client={{ $client->id }}">
           + Add a Project
         </x-button-link>
       </div>

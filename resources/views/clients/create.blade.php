@@ -25,7 +25,7 @@
 
       <div class="flex flex-row mt-4">
         <div class="basis-1/2 mr-4">
-          <x-label for="email" :value="__('Address')" />
+          <x-label for="address" :value="__('Address')" />
           <x-input-textarea id="address" class="block mt-1 w-full" type="text" name="address">
             {{ old('address') ?? '' }}</x-input-textarea>
         </div>

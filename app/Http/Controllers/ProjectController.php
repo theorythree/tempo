@@ -25,10 +25,11 @@ class ProjectController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
+      $client = Client::where('id',$request->client)->first();
       $this->authorize('create', Project::class);
-      return view('projects.create');
+      return view('projects.create', compact(['client']));
     }
 
     /**

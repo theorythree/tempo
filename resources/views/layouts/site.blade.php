@@ -22,6 +22,12 @@
 
   @include('navigation.site-nav')
 
+  @if (session('success'))
+    <x-alert>
+      {{ session('success') }}
+    </x-alert>
+  @endif
+
   @if (isset($header))
     <!-- Page Heading -->
     <header class="bg-white shadow">
@@ -32,12 +38,6 @@
   @endif
   <!-- Page Content -->
   <main class="font-sans text-gray-900 antialiased flex-auto">
-    @if (session('success'))
-      <x-alert>
-        {{ session('success') }}
-      </x-alert>
-    @endif
-
     {{ $slot }}
   </main>
 </body>

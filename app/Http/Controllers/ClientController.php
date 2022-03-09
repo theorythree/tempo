@@ -40,7 +40,7 @@ class ClientController extends Controller
     {
       $this->authorize('create', Client::class);
       $client = Client::create($request->validated());
-      return redirect()->route('clients.show',$client->id);
+      return redirect()->route('clients.show',$client->id)->with('success', 'Client saved successsfully');
     }
 
     /**
@@ -77,7 +77,7 @@ class ClientController extends Controller
     {
       $this->authorize('update',$client);
       $client->update($request->validated());
-      return redirect()->route('clients.show',$client->id);
+      return redirect()->route('clients.show',$client->id)->with('success', 'Client saved successsfully');
     }
     
     /**

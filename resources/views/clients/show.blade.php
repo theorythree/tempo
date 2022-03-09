@@ -23,16 +23,16 @@
       <h3 class="w-20 font-bold">Code:</h3>
       <div>{{ $client->code }}</div>
     </div>
-    @if ($client->address)
-      <div class="flex gap-4 columns-2">
-        <h3 class="w-20 font-bold">Address:</h3>
-        <div>{{ $client->address }}</div>
-      </div>
-    @endif
     @if ($client->phone)
       <div class="flex gap-4 columns-2">
         <h3 class="w-20 font-bold">Phone:</h3>
         <div>{{ $client->phone }}</div>
+      </div>
+    @endif
+    @if ($client->address)
+      <div class="flex gap-4 columns-2">
+        <h3 class="w-20 font-bold">Address:</h3>
+        <div>{!! nl2br($client->address) !!}</div>
       </div>
     @endif
   </x-section-wrapper>

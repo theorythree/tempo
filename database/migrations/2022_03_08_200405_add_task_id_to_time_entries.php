@@ -14,7 +14,7 @@ class AddTaskIdToTimeEntries extends Migration
     public function up()
     {
         Schema::table('time_entries', function (Blueprint $table) {
-          $table->unsignedInteger('task_id')->after('user_id');
+          $table->unsignedInteger('task_id')->after('user_id')->default(0);
         });
     }
 

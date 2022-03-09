@@ -19,7 +19,7 @@
         </div>
         <div class="basis-1/2 ml-4">
           <x-label for="budget" :value="__('Budget (USD)')" />
-          <x-input id="budget" class="block mt-1 w-sm" type="text" name="code" :value="old('budget')"
+          <x-input id="budget" class="block mt-1 w-sm" type="text" name="budget" :value="old('budget')"
             value="{{ old('budget') ?? '' }}" />
         </div>
       </div>

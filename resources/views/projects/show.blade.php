@@ -3,7 +3,7 @@
     <h2 class="font-semibold text-xl text-gray-800 leading-tight">
       {{ $project->name }}
       @if (Auth::user()->can('update', $project))
-        <x-button-link href="{{ route('projects.edit', $project->id) }}">
+        <x-button-link href="{{ route('projects.edit', $project->id) }}/?client={{ $project->client->id }}">
           Edit
         </x-button-link>
       @endif

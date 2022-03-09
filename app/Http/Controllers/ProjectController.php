@@ -40,8 +40,10 @@ class ProjectController extends Controller
      */
     public function store(ProjectRequest $request)
     {
+      // TODO: Store Project Budget in pennies (make a mutator, and accessor to format in USD format)
       $this->authorize('create', Project::class);      
       $project = Project::create($request->validated());
+      return redirect()->route('projects.show',$project->id)->with('success', 'Project created successsfully');
     }
 
     /**
@@ -62,9 +64,10 @@ class ProjectController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function edit(Project $project)
-    {
+    {      
       $this->authorize('update', $project);
-      return view('projects.edit',compact('project'));
+      $client = $project->client;
+      return view('projects.edit',compact(['project','client']));
     }
 
     /**
@@ -78,6 +81,7 @@ class ProjectController extends Controller
     {
       $this->authorize('update', $project);
       $project->update($request->validated());
+      return redirect()->route('projects.show',$project->id)->with('success', 'Project updated successsfully');
     }
 
     /**

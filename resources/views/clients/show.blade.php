@@ -2,27 +2,39 @@
   <x-slot name="header">
     <h2 class="font-semibold text-xl text-gray-800 leading-tight">
       {{ $client->name }}
-      @if (Auth::user()->can('update', $client))
-        <x-button-link href="{{ route('clients.edit', $client->id) }}">
-          Edit
-        </x-button-link>
-      @endif
     </h2>
   </x-slot>
 
+  <x-section-wrapper>
+    @if (Auth::user()->can('update', $client))
+      <x-button-link href="{{ route('clients.edit', $client->id) }}">
+        Edit Client Details
+      </x-button-link>
+    @endif
+  </x-section-wrapper>
+
   <x-section-wrapper title="Client Details:">
+
+    <div class="flex gap-4 columns-2">
+      <h3 class="w-20 font-bold">Name:</h3>
+      <div>{{ $client->name }}</div>
+    </div>
     <div class="flex gap-4 columns-2">
       <h3 class="w-20 font-bold">Code:</h3>
       <div>{{ $client->code }}</div>
     </div>
-    <div class="flex gap-4 columns-2">
-      <h3 class="w-20 font-bold">Address:</h3>
-      <div>{{ $client->address }}</div>
-    </div>
-    <div class="flex gap-4 columns-2">
-      <h3 class="w-20 font-bold">Phone:</h3>
-      <div>{{ $client->phone }}</div>
-    </div>
+    @if ($client->address)
+      <div class="flex gap-4 columns-2">
+        <h3 class="w-20 font-bold">Address:</h3>
+        <div>{{ $client->address }}</div>
+      </div>
+    @endif
+    @if ($client->phone)
+      <div class="flex gap-4 columns-2">
+        <h3 class="w-20 font-bold">Phone:</h3>
+        <div>{{ $client->phone }}</div>
+      </div>
+    @endif
   </x-section-wrapper>
 
   <x-section-wrapper title="Projects:">

@@ -18,7 +18,7 @@
     </div>
     <div class="flex gap-4 columns-2">
       <h3 class="w-20 font-bold">Budget:</h3>
-      <div>${{ number_format($project->budget, 2, '.', ',') }}</div>
+      <div>{{ $project->budgetDisplay }}</div>
     </div>
   </x-section-wrapper>
 
@@ -35,7 +35,7 @@
       </div>
     @endforelse
     <h2>Total Time: {{ $project->totalTime }}</h2>
-    <h2>Total Cost: ${{ $project->totalCostDisplay }}</h2>
+    <h2>Total Cost: {{ $project->totalCostDisplay }}</h2>
   </x-section-wrapper>
 
 </x-site-layout>

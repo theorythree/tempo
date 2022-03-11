@@ -5,12 +5,17 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Services\DurationService;
+use App\Services\StringFormatService;
 
 class Project extends Model
 {
     use HasFactory;
     
     protected $fillable = ['client_id','name','description','budget'];
+
+    // ------------------------------------------------------------------------
+    // Relationships
+    // ------------------------------------------------------------------------
 
     public function client()
     {
@@ -21,6 +26,10 @@ class Project extends Model
     {
       return $this->hasMany(TimeEntry::class)->orderBy('date','desc');
     }
+
+    // ------------------------------------------------------------------------
+    // Accessors and Mutators
+    // ------------------------------------------------------------------------
 
     public function getTotalTimeAttribute()
     {
@@ -33,7 +42,6 @@ class Project extends Model
       }
 
       return (new DurationService())->convertToDisplay($total);
-
     }
 
     public function getTotalCostAttribute()
@@ -50,6 +58,10 @@ class Project extends Model
     }
 
     public function getTotalCostDisplayAttribute() {
-      return number_format($this->totalCost, 2, '.', ',');
+      return (new StringFormatService())->currencyDisplayFormat($this->totalCost);
+    }
+
+    public function getBudgetDisplayAttribute() {
+      return (new StringFormatService())->currencyDisplayFormat($this->budget);
     }
 }

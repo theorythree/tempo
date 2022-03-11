@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use Auth;
 use Illuminate\Foundation\Http\FormRequest;
+use App\Services\StringFormatService;
 
 class ProjectRequest extends FormRequest
 {
@@ -20,5 +21,13 @@ class ProjectRequest extends FormRequest
       'description' => ['nullable'],
       'budget' => ['nullable','numeric'],
     ];
+  }
+
+  protected function prepareForValidation(): void
+  {
+    $budget = (new StringFormatService())->currencyStorageFormat($this->budget);
+    $this->merge([
+      'budget' => $budget,
+    ]);
   }
 }

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Services\StringFormatService;
 
 class Client extends Model
 {
@@ -14,5 +15,10 @@ class Client extends Model
     public function projects() 
     {
       return $this->hasMany(Project::class);
+    }
+
+    public function getPhoneDisplayAttribute()
+    {
+      return (new StringFormatService())->phoneDisplayFormat($this->phone);
     }
 }

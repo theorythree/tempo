@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Services\StringFormatService;
 
 class Task extends Model
 {
@@ -16,6 +17,6 @@ class Task extends Model
 
     public function getDisplayRateAttribute()
     {
-      return number_format($this->rate, 2, '.', ',');
+      return (new StringFormatService())->currencyDisplayFormat($this->rate);
     }
  }

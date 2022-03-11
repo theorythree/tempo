@@ -26,7 +26,7 @@
     @if ($client->phone)
       <div class="flex gap-4 columns-2">
         <h3 class="w-20 font-bold">Phone:</h3>
-        <div>{{ $client->phone }}</div>
+        <div>{{ $client->phoneDisplay }}</div>
       </div>
     @endif
     @if ($client->address)

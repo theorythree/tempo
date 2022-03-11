@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use Auth;
 use Illuminate\Foundation\Http\FormRequest;
+use App\Services\StringFormatService;
 
 class ClientRequest extends FormRequest
 {
@@ -21,4 +22,12 @@ class ClientRequest extends FormRequest
         'address' => ['nullable'],
       ];
     }
+
+  protected function prepareForValidation(): void
+  {
+    $phone = (new StringFormatService())->phoneStorageFormat($this->phone);
+    $this->merge([
+      'phone' => $phone,
+    ]);
+  }
 }

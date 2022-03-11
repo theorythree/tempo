@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Services\DurationService;
+use App\Services\StringFormatService;
 
 class TimeEntry extends Model
 {
@@ -42,6 +43,6 @@ class TimeEntry extends Model
 
   public function getTotalDisplayAttribute()
   {
-    return number_format($this->total, 2, '.', ',');
+    return (new StringFormatService())->currencyDisplayFormat($this->total);
   }
 }

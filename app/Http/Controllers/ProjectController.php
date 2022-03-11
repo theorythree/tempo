@@ -40,7 +40,6 @@ class ProjectController extends Controller
      */
     public function store(ProjectRequest $request)
     {
-      // TODO: Store Project Budget in pennies (make a mutator, and accessor to format in USD format)
       $this->authorize('create', Project::class);      
       $project = Project::create($request->validated());
       return redirect()->route('projects.show',$project->id)->with('success', 'Project created successsfully');
